@@ -4,6 +4,8 @@ import { site } from "@/lib/site";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/business",
+    "/residential",
     "/about",
     "/services",
     "/services/cctv",
@@ -16,6 +18,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${site.url}${path}`,
     lastModified: new Date(),
     changeFrequency: path === "" ? "weekly" : "monthly",
-    priority: path === "" ? 1 : path.startsWith("/services/") ? 0.8 : 0.7,
+    priority:
+      path === ""
+        ? 1
+        : path === "/business" || path === "/residential"
+          ? 0.9
+          : path.startsWith("/services/")
+            ? 0.8
+            : 0.7,
   }));
 }

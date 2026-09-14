@@ -13,7 +13,7 @@ import {
   Eyebrow,
   Section,
 } from "@/components/ui";
-import { serviceLinks, site } from "@/lib/site";
+import { audienceLinks, serviceLinks, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: { absolute: "Alt AV | CCTV Biometrics & AV Specialists Cape Town" },
@@ -84,6 +84,41 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <Section tone="muted">
+        <Eyebrow>Who we serve</Eyebrow>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          For business or for home
+        </h2>
+        <p className="mt-3 max-w-3xl text-slate-600">
+          Whether you need commercial staff management and security tech or
+          residential CCTV and home entertainment, start with the path that fits
+          you.
+        </p>
+        <div className="mt-10 grid gap-6 sm:grid-cols-2">
+          {audienceLinks.map((item) => (
+            <Link key={item.href} href={item.href} className="group block">
+              <Card hover className="h-full">
+                <h3 className="text-lg font-semibold text-slate-900 group-hover:text-brand-700">
+                  {item.label}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  {item.summary}
+                </p>
+                <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
+                  Explore
+                  <span
+                    aria-hidden="true"
+                    className="transition group-hover:translate-x-0.5"
+                  >
+                    →
+                  </span>
+                </span>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </Section>
 
       <Section>
         <Eyebrow>Services</Eyebrow>

@@ -25,9 +25,26 @@ export const site = {
 
 export const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/business", label: "Business" },
+  { href: "/residential", label: "Residential" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/contact", label: "Contact" },
+] as const;
+
+export const audienceLinks = [
+  {
+    href: "/business",
+    label: "For business",
+    summary:
+      "CCTV, biometrics, Time & Attendance and corporate AV for Cape Town commercial sites.",
+  },
+  {
+    href: "/residential",
+    label: "For home",
+    summary:
+      "Home CCTV, entertainment and AV solutions for Cape Town and Paarden Eiland homes.",
+  },
 ] as const;
 
 export const serviceLinks = [
