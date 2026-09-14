@@ -43,7 +43,7 @@ export function Header() {
           className="flex items-center gap-3 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           onClick={() => setOpen(false)}
         >
-          <LogoMark className="h-10 w-10 shrink-0" />
+          <LogoMark className="h-10 w-10 shrink-0" priority />
           <span className="flex flex-col leading-tight">
             <span className="text-base font-bold tracking-tight text-brand-800 sm:text-lg">
               {site.shortName}

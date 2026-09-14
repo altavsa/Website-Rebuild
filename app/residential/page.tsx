@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { CtaBand } from "@/components/CtaBand";
 import { IconCamera, IconCheck, IconMonitor } from "@/components/Icons";
@@ -7,6 +8,7 @@ import {
   ButtonLink,
   Card,
   Eyebrow,
+  FeaturePhoto,
   PageHero,
   Section,
 } from "@/components/ui";
@@ -33,12 +35,24 @@ const focusAreas = [
     title: "Home CCTV & security",
     body: "Clear day-and-night surveillance for driveways, entrances and living spaces — sized for your property, with remote viewing and reliable recording.",
     href: "/services/cctv",
+    image: {
+      src: "/images/security-sensor-1.jpg",
+      alt: "Ceiling-mounted smart security sensor in a residential garage",
+      width: 640,
+      height: 468,
+    },
   },
   {
     icon: IconMonitor,
     title: "Home entertainment & AV",
     body: "Media streaming, home cinema and living-room AV set up cleanly so everyday viewing and entertaining just works.",
     href: "/services/av",
+    image: {
+      src: "/images/cover-hero.jpg",
+      alt: "Home entertainment setup with TV and speakers in a living room",
+      width: 851,
+      height: 315,
+    },
   },
 ];
 
@@ -51,6 +65,30 @@ const lifestylePoints = [
   "Local Cape Town team based in Paarden Eiland — visits by appointment",
 ];
 
+const productShots = [
+  {
+    src: "/images/security-hub-1.jpg",
+    alt: "Smart security hub on a clean white background",
+    width: 628,
+    height: 628,
+    caption: "Smart security hub",
+  },
+  {
+    src: "/images/smart-switch-1.jpg",
+    alt: "Smart wall switch installed in a living-room setting",
+    width: 800,
+    height: 600,
+    caption: "Smart switches & outlets",
+  },
+  {
+    src: "/images/smart-water-device-1.jpg",
+    alt: "Smart water-leak sensor and utility-room pipework",
+    width: 800,
+    height: 600,
+    caption: "Leak & utility monitoring",
+  },
+] as const;
+
 export default function ResidentialPage() {
   return (
     <>
@@ -58,6 +96,13 @@ export default function ResidentialPage() {
         eyebrow="Home & residential"
         title="Home CCTV, entertainment and AV in Cape Town"
         description="Alt AV supports homeowners and residential clients with professional CCTV, home entertainment and audio visual solutions — the same careful design and after-sales approach we bring to commercial work, from our base in Paarden Eiland."
+        image={{
+          src: "/images/smart-switch-1.jpg",
+          alt: "Smart wall switch installation in a Cape Town living room",
+          width: 800,
+          height: 600,
+          priority: true,
+        }}
       />
 
       <Section>
@@ -75,25 +120,37 @@ export default function ResidentialPage() {
             const Icon = area.icon;
             return (
               <Link key={area.href} href={area.href} className="group block">
-                <Card hover className="h-full">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
-                    <Icon />
+                <Card hover className="h-full overflow-hidden p-0">
+                  <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                    <Image
+                      src={area.image.src}
+                      alt={area.image.alt}
+                      width={area.image.width}
+                      height={area.image.height}
+                      className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
+                      sizes="(max-width: 640px) 100vw, 50vw"
+                    />
                   </div>
-                  <h3 className="mt-4 text-lg font-semibold text-slate-900 group-hover:text-brand-700">
-                    {area.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">
-                    {area.body}
-                  </p>
-                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
-                    Learn more
-                    <span
-                      aria-hidden="true"
-                      className="transition group-hover:translate-x-0.5"
-                    >
-                      →
+                  <div className="p-6">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+                      <Icon />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-slate-900 group-hover:text-brand-700">
+                      {area.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                      {area.body}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brand-700">
+                      Learn more
+                      <span
+                        aria-hidden="true"
+                        className="transition group-hover:translate-x-0.5"
+                      >
+                        →
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </Card>
               </Link>
             );
@@ -102,6 +159,30 @@ export default function ResidentialPage() {
       </Section>
 
       <Section tone="white">
+        <Eyebrow>Smart home & security</Eyebrow>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+          Hubs, sensors and practical automation
+        </h2>
+        <p className="mt-3 max-w-3xl text-slate-600">
+          Alongside residential CCTV and entertainment, we install smart security
+          hubs and sensors, smart switches, and utility monitoring — scoped to your
+          home without locking you into a single vendor story.
+        </p>
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          {productShots.map((shot) => (
+            <FeaturePhoto
+              key={shot.src}
+              src={shot.src}
+              alt={shot.alt}
+              width={shot.width}
+              height={shot.height}
+              caption={shot.caption}
+            />
+          ))}
+        </div>
+      </Section>
+
+      <Section>
         <Eyebrow>Aligned with how we work</Eyebrow>
         <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
           Home entertainment, automation and more
@@ -124,59 +205,74 @@ export default function ResidentialPage() {
         </ul>
       </Section>
 
-      <Section>
-        <Eyebrow>Get in touch</Eyebrow>
-        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-          Plan your home project with Alt AV
-        </h2>
-        <p className="mt-3 max-w-3xl text-slate-600">
-          Call, email or send a message — we will discuss your needs and propose a
-          clear next step. No placeholder packages; just a professional quote for
-          your home.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href="/contact">Contact us</ButtonLink>
-          <ButtonAnchor href={site.phoneHref} variant="secondary">
-            Call {site.phone}
-          </ButtonAnchor>
-          <ButtonAnchor href={site.emailHref} variant="outline">
-            Email us
-          </ButtonAnchor>
+      <Section tone="muted">
+        <div className="grid items-center gap-8 lg:grid-cols-[1.2fr_0.8fr]">
+          <div>
+            <Eyebrow>Get in touch</Eyebrow>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
+              Plan your home project with Alt AV
+            </h2>
+            <p className="mt-3 max-w-3xl text-slate-600">
+              Call, email or send a message — we will discuss your needs and propose a
+              clear next step. No placeholder packages; just a professional quote for
+              your home.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <ButtonLink href="/contact">Contact us</ButtonLink>
+              <ButtonAnchor href={site.phoneHref} variant="secondary">
+                Call {site.phone}
+              </ButtonAnchor>
+              <ButtonAnchor href={site.emailHref} variant="outline">
+                Email us
+              </ButtonAnchor>
+            </div>
+            <ul className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-brand-700">
+              <li>
+                <Link
+                  href="/services/cctv"
+                  className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  CCTV →
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services/av"
+                  className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Corporate AV / entertainment →
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/services"
+                  className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  All services →
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                >
+                  Contact →
+                </Link>
+              </li>
+            </ul>
+          </div>
+          {/* Wide cover used carefully as a short band, not stretched as a tall hero */}
+          <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-card">
+            <Image
+              src="/images/cover-hero.jpg"
+              alt="Home AV room with television and speakers"
+              width={851}
+              height={315}
+              className="h-auto w-full object-cover"
+              sizes="(max-width: 1024px) 100vw, 400px"
+            />
+          </div>
         </div>
-        <ul className="mt-8 flex flex-wrap gap-4 text-sm font-semibold text-brand-700">
-          <li>
-            <Link
-              href="/services/cctv"
-              className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-            >
-              CCTV →
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/services/av"
-              className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-            >
-              Corporate AV / entertainment →
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/services"
-              className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-            >
-              All services →
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/contact"
-              className="hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-            >
-              Contact →
-            </Link>
-          </li>
-        </ul>
       </Section>
 
       <CtaBand

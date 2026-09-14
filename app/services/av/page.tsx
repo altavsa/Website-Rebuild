@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/CtaBand";
 import { IconCheck, IconMonitor } from "@/components/Icons";
-import { Card, Eyebrow, PageHero, Section } from "@/components/ui";
+import { Card, Eyebrow, FeaturePhoto, PageHero, Section } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -34,27 +34,45 @@ export default function AvPage() {
         icon={<IconMonitor className="h-8 w-8" />}
         title="Corporate audio visual"
         description="Meeting rooms should feel effortless. Alt AV installs boardroom, conferencing and presentation systems so your team can focus on the conversation — not the remote."
+        image={{
+          src: "/images/cover-hero.jpg",
+          alt: "Room with flat-screen display and speakers ready for AV use",
+          width: 851,
+          height: 315,
+          priority: true,
+        }}
       />
 
       <Section>
-        <Eyebrow>Installs</Eyebrow>
-        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
-          Typical installs
-        </h2>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-          {features.map((item) => (
-            <li key={item}>
-              <Card className="flex items-start gap-3 p-4">
-                <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
-                <span className="text-slate-700">{item}</span>
-              </Card>
-            </li>
-          ))}
-        </ul>
-        <p className="mt-8 max-w-3xl text-slate-600">
-          We specify equipment that matches room size and usage, install neatly,
-          and support you after handover — with finance or cash deal options.
-        </p>
+        <div className="grid items-start gap-10 lg:grid-cols-2">
+          <div>
+            <Eyebrow>Installs</Eyebrow>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+              Typical installs
+            </h2>
+            <ul className="mt-8 grid gap-3">
+              {features.map((item) => (
+                <li key={item}>
+                  <Card className="flex items-start gap-3 p-4">
+                    <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
+                    <span className="text-slate-700">{item}</span>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 max-w-3xl text-slate-600">
+              We specify equipment that matches room size and usage, install neatly,
+              and support you after handover — with finance or cash deal options.
+            </p>
+          </div>
+          <FeaturePhoto
+            src="/images/smart-switch-1.jpg"
+            alt="Clean living-room style install showing neat AV-related wall hardware"
+            width={800}
+            height={600}
+            caption="Neat finishes matter — at home and in the boardroom"
+          />
+        </div>
       </Section>
 
       <CtaBand

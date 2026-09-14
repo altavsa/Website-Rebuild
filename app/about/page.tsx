@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/CtaBand";
 import { IconCheck } from "@/components/Icons";
-import { Card, Eyebrow, PageHero, Section } from "@/components/ui";
+import { Card, Eyebrow, FeaturePhoto, PageHero, Section } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -54,23 +54,51 @@ export default function AboutPage() {
         eyebrow="About"
         title="About Alt AV"
         description={`Since early ${site.since}, Alt AV (Pty) Ltd has helped Cape Town businesses protect assets and manage people with CCTV, biometrics / access control and corporate audio visual systems. Based in Paarden Eiland, we have completed ${site.projects} projects and earned consistent 5-star Google and Facebook reviews.`}
+        image={{
+          src: "/images/site-install-1.jpg",
+          alt: "Cape Town property during early security-install planning",
+          width: 1920,
+          height: 1059,
+          priority: true,
+        }}
       />
 
       <Section>
-        <Eyebrow>Why Alt AV</Eyebrow>
-        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
-          Why choose us
-        </h2>
-        <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-          {reasons.map((item) => (
-            <li key={item}>
-              <Card className="flex h-full items-start gap-3 p-4">
-                <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
-                <span className="text-slate-700">{item}</span>
-              </Card>
-            </li>
-          ))}
-        </ul>
+        <div className="grid items-start gap-10 lg:grid-cols-2">
+          <div>
+            <Eyebrow>Why Alt AV</Eyebrow>
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+              Why choose us
+            </h2>
+            <ul className="mt-8 grid gap-3">
+              {reasons.map((item) => (
+                <li key={item}>
+                  <Card className="flex h-full items-start gap-3 p-4">
+                    <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
+                    <span className="text-slate-700">{item}</span>
+                  </Card>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="space-y-4">
+            <FeaturePhoto
+              src="/images/security-handover-1.jpg"
+              alt="Security system handover with CCTV monitor wall and access keypad"
+              width={1024}
+              height={1024}
+              caption="Professional handover — systems you can actually use"
+            />
+            {/* Short Facebook cover used as a band, not stretched as a tall hero */}
+            <FeaturePhoto
+              src="/images/cover-hero.jpg"
+              alt="Room AV installation with television and speakers"
+              width={851}
+              height={315}
+              caption="AV and entertainment installs across Cape Town"
+            />
+          </div>
+        </div>
       </Section>
 
       <Section tone="white">
