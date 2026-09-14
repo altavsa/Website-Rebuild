@@ -1,8 +1,12 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import { Button } from "@/components/ui";
 
 type Status = "idle" | "loading" | "success" | "error";
+
+const fieldClass =
+  "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-slate-900 shadow-sm transition placeholder:text-slate-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-200";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
@@ -46,10 +50,10 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4" noValidate>
+    <form onSubmit={onSubmit} className="space-y-5" noValidate>
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-slate-700">
-          Name
+          Name <span className="text-brand-600">*</span>
         </label>
         <input
           id="name"
@@ -57,15 +61,13 @@ export function ContactForm() {
           type="text"
           required
           autoComplete="name"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          placeholder="Your full name"
+          className={fieldClass}
         />
       </div>
       <div>
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-slate-700"
-        >
-          Email
+        <label htmlFor="email" className="block text-sm font-medium text-slate-700">
+          Email <span className="text-brand-600">*</span>
         </label>
         <input
           id="email"
@@ -73,56 +75,51 @@ export function ContactForm() {
           type="email"
           required
           autoComplete="email"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          placeholder="you@company.co.za"
+          className={fieldClass}
         />
       </div>
       <div>
-        <label
-          htmlFor="phone"
-          className="block text-sm font-medium text-slate-700"
-        >
-          Phone
+        <label htmlFor="phone" className="block text-sm font-medium text-slate-700">
+          Phone <span className="font-normal text-slate-400">(optional)</span>
         </label>
         <input
           id="phone"
           name="phone"
           type="tel"
           autoComplete="tel"
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          placeholder="+27 …"
+          className={fieldClass}
         />
       </div>
       <div>
-        <label
-          htmlFor="message"
-          className="block text-sm font-medium text-slate-700"
-        >
-          Message
+        <label htmlFor="message" className="block text-sm font-medium text-slate-700">
+          Message <span className="text-brand-600">*</span>
         </label>
         <textarea
           id="message"
           name="message"
           required
           rows={5}
-          className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 shadow-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-200"
+          placeholder="Tell us about your site, timeline or requirements…"
+          className={fieldClass}
         />
       </div>
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="inline-flex w-full items-center justify-center rounded-md bg-brand-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-800 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
-      >
+      <Button type="submit" disabled={status === "loading"} className="w-full sm:w-auto">
         {status === "loading" ? "Sending…" : "Send message"}
-      </button>
-      {message && (
+      </Button>
+      {message ? (
         <p
           role="status"
-          className={`text-sm ${
-            status === "success" ? "text-emerald-700" : "text-red-700"
+          className={`rounded-xl px-4 py-3 text-sm ${
+            status === "success"
+              ? "border border-emerald-200 bg-emerald-50 text-emerald-800"
+              : "border border-red-200 bg-red-50 text-red-800"
           }`}
         >
           {message}
         </p>
-      )}
+      ) : null}
     </form>
   );
 }

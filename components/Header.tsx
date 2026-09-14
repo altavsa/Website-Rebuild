@@ -2,63 +2,90 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useId, useState } from "react";
+import { LogoMark } from "@/components/Logo";
+import { ButtonAnchor, ButtonLink } from "@/components/ui";
 import { navLinks, site } from "@/lib/site";
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const panelId = useId();
 
   const isActive = (href: string) =>
     href === "/"
       ? pathname === "/"
       : pathname === href || pathname.startsWith(`${href}/`);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
         <Link
           href="/"
-          className="flex flex-col leading-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          className="flex items-center gap-3 rounded-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           onClick={() => setOpen(false)}
         >
-          <span className="text-lg font-bold tracking-tight text-brand-800">
-            {site.shortName}
+          <LogoMark className="h-10 w-10 shrink-0" />
+          <span className="flex flex-col leading-tight">
+            <span className="text-base font-bold tracking-tight text-brand-800 sm:text-lg">
+              {site.shortName}
+            </span>
+            <span className="hidden text-xs text-slate-500 sm:block">
+              {site.tagline}
+            </span>
           </span>
-          <span className="text-xs text-slate-500">{site.tagline}</span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`rounded-md px-3 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
-                isActive(link.href)
-                  ? "bg-brand-50 text-brand-800"
-                  : "text-slate-700 hover:bg-slate-50 hover:text-brand-700"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
-          <a
-            href={site.phoneHref}
-            className="ml-2 inline-flex items-center rounded-md bg-brand-700 px-3 py-2 text-sm font-semibold text-white hover:bg-brand-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-          >
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Main">
+          {navLinks
+            .filter((link) => link.href !== "/contact")
+            .map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={`rounded-xl px-3 py-2 text-sm font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+                  isActive(link.href)
+                    ? "bg-brand-50 text-brand-800"
+                    : "text-slate-700 hover:bg-slate-50 hover:text-brand-700"
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          <ButtonLink href="/contact" variant="secondary" className="ml-2 px-3 py-2">
+            Contact
+          </ButtonLink>
+          <ButtonAnchor href={site.phoneHref} variant="primary" className="px-3 py-2">
             Call
-          </a>
+          </ButtonAnchor>
         </nav>
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md border border-slate-200 p-2 text-slate-700 md:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          className="inline-flex items-center justify-center rounded-xl border border-slate-200 p-2.5 text-slate-700 transition hover:bg-slate-50 lg:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           aria-expanded={open}
-          aria-controls="mobile-nav"
+          aria-controls={panelId}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((v) => !v)}
         >
-          <span className="sr-only">Menu</span>
           <svg
             className="h-6 w-6"
             viewBox="0 0 24 24"
@@ -76,45 +103,57 @@ export function Header() {
         </button>
       </div>
 
-      {open && (
-        <nav
-          id="mobile-nav"
-          className="border-t border-slate-200 bg-white px-4 py-3 md:hidden"
-          aria-label="Mobile"
-        >
-          <ul className="flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className={`block rounded-md px-3 py-2 text-base font-medium ${
-                    isActive(link.href)
-                      ? "bg-brand-50 text-brand-800"
-                      : "text-slate-700"
-                  }`}
+      <div
+        id={panelId}
+        className={`grid overflow-hidden border-slate-200 bg-white transition-[grid-template-rows,opacity,border-color] duration-300 ease-out lg:hidden ${
+          open
+            ? "grid-rows-[1fr] border-t opacity-100"
+            : "grid-rows-[0fr] border-t border-transparent opacity-0"
+        }`}
+        aria-hidden={!open}
+      >
+        <div className="min-h-0">
+          <nav className="px-4 py-4" aria-label="Mobile">
+            <ul className="flex flex-col gap-1">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    tabIndex={open ? undefined : -1}
+                    className={`block rounded-xl px-3 py-2.5 text-base font-medium focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
+                      isActive(link.href)
+                        ? "bg-brand-50 text-brand-800"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                    onClick={() => setOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+              <li className="mt-3 flex gap-2">
+                <ButtonAnchor
+                  href={site.phoneHref}
+                  variant="primary"
+                  className="flex-1"
+                  tabIndex={open ? undefined : -1}
+                >
+                  Call
+                </ButtonAnchor>
+                <ButtonLink
+                  href="/contact"
+                  variant="secondary"
+                  className="flex-1"
+                  tabIndex={open ? undefined : -1}
                   onClick={() => setOpen(false)}
                 >
-                  {link.label}
-                </Link>
+                  Contact
+                </ButtonLink>
               </li>
-            ))}
-            <li className="mt-2 flex gap-2">
-              <a
-                href={site.phoneHref}
-                className="flex-1 rounded-md bg-brand-700 px-3 py-2 text-center text-sm font-semibold text-white"
-              >
-                Call
-              </a>
-              <a
-                href={site.emailHref}
-                className="flex-1 rounded-md border border-slate-200 px-3 py-2 text-center text-sm font-semibold text-slate-800"
-              >
-                Email
-              </a>
-            </li>
-          </ul>
-        </nav>
-      )}
+            </ul>
+          </nav>
+        </div>
+      </div>
     </header>
   );
 }

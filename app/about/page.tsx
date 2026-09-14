@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/CtaBand";
 import { IconCheck } from "@/components/Icons";
+import { Card, Eyebrow, PageHero, Section } from "@/components/ui";
 import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -49,50 +50,41 @@ const reviews = [
 export default function AboutPage() {
   return (
     <>
-      <section className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-            About Alt AV
-          </h1>
-          <p className="mt-4 max-w-3xl text-lg text-slate-600">
-            Since early {site.since}, Alt AV (Pty) Ltd has helped Cape Town
-            businesses protect assets and manage people with CCTV, biometrics /
-            access control and corporate audio visual systems. Based in Paarden
-            Eiland, we have completed {site.projects} projects and earned
-            consistent 5-star Google and Facebook reviews.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="About"
+        title="About Alt AV"
+        description={`Since early ${site.since}, Alt AV (Pty) Ltd has helped Cape Town businesses protect assets and manage people with CCTV, biometrics / access control and corporate audio visual systems. Based in Paarden Eiland, we have completed ${site.projects} projects and earned consistent 5-star Google and Facebook reviews.`}
+      />
 
-      <section className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+      <Section>
+        <Eyebrow>Why Alt AV</Eyebrow>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
           Why choose us
         </h2>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+        <ul className="mt-8 grid gap-3 sm:grid-cols-2">
           {reasons.map((item) => (
-            <li
-              key={item}
-              className="flex items-start gap-3 rounded-lg border border-slate-200 bg-white p-4"
-            >
-              <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
-              <span className="text-slate-700">{item}</span>
+            <li key={item}>
+              <Card className="flex h-full items-start gap-3 p-4">
+                <IconCheck className="mt-0.5 shrink-0 text-brand-600" />
+                <span className="text-slate-700">{item}</span>
+              </Card>
             </li>
           ))}
         </ul>
-      </section>
+      </Section>
 
-      <section className="border-y border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-          <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-            What clients say
-          </h2>
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
-            {reviews.map((review) => (
-              <blockquote
-                key={review.name}
-                className="rounded-xl border border-slate-200 bg-slate-50 p-6"
-              >
-                <p className="text-slate-700">&ldquo;{review.quote}&rdquo;</p>
+      <Section tone="white">
+        <Eyebrow>Reviews</Eyebrow>
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-slate-900">
+          What clients say
+        </h2>
+        <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {reviews.map((review) => (
+            <blockquote key={review.name}>
+              <Card className="h-full bg-slate-50">
+                <p className="leading-relaxed text-slate-700">
+                  &ldquo;{review.quote}&rdquo;
+                </p>
                 <footer className="mt-4 text-sm font-semibold text-brand-800">
                   {review.name}
                   <span className="font-normal text-slate-500">
@@ -100,11 +92,11 @@ export default function AboutPage() {
                     — {review.place}
                   </span>
                 </footer>
-              </blockquote>
-            ))}
-          </div>
+              </Card>
+            </blockquote>
+          ))}
         </div>
-      </section>
+      </Section>
 
       <CtaBand
         title="Let’s talk about your next project"
